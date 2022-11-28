@@ -1,18 +1,5 @@
-# download r and r studio here: http://mathcenter.oxford.emory.edu/site/math117/installRStudio/
-
-# remove the '#' if you haven't installed these packages already
-
-# install.packages("tidyverse")
-# install.packages("nflfastR")
-# install.packages("ggimage")
-# install.packages("gt")
-# install.packages("gtExtras")
-
-# Load the packages we installed
-library(tidyverse)
-library(nflfastR)
-library(ggimage)
-library(gt)
+library(pacman)
+pacman::p_load(tidyverse, nflfastR, ggimage, gt, install = TRUE)
 
 # Load multiple years of pbp data
 pbp <- load_pbp(2021:2022)
@@ -39,18 +26,20 @@ pbp_rp <- pbp |>
 # Now we can see that our dataset got smaller
 nrow(pbp_rp)
 
-# Who was the Lions best rusher last season?
+# Who was the Patriots best rusher last season?
 pbp_rp |> 
-  filter(posteam == "DET", rush == 1, !is.na(rusher_player_name)) |> 
+  filter(posteam == "NE", rush == 1, !is.na(rusher_player_name)) |> 
   group_by(rusher_player_name) |> 
   summarize(rushes = n(),
             epa_rush = mean(epa)) |> 
   filter(rushes >= 10) |> 
   arrange(-epa_rush)
 
-# Who was the Dolphins best quarterback last season?
+#looks like it was KB based on EPA metric 
+
+# Who was the NE best quarterback last season?
 pbp_rp |> 
-  filter(posteam == "CAR", !is.na(id)) |> 
+  filter(posteam == "NE", !is.na(id)) |> 
   group_by(id) |> 
   summarize(name = first(name),
             plays = n(),
